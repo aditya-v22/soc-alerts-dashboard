@@ -1,17 +1,26 @@
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 import { PrismaClient } from '@prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 import * as bcrypt from 'bcrypt';
 import { generateAlerts } from '../scripts/generate-alerts';
 
-const prisma = new PrismaClient();
+dotenv.config();
 
 async function main() {
+  const dbUrl = process.env.DATABASE_URL!;
+  const resolvedUrl = dbUrl.startsWith('file:./')
+    ? `file:${path.resolve(process.cwd(), dbUrl.replace('file:./', ''))}`
+    : dbUrl;
+
+  const adapter = new PrismaLibSql({ url: resolvedUrl });
+  const prisma = new PrismaClient({ adapter } as any);
+
   console.log('Seeding database...');
 
-  // Clear existing data
   await prisma.alert.deleteMany();
   await prisma.user.deleteMany();
 
-  // Create analyst user
   const hashedPassword = await bcrypt.hash('DefenderM8!', 10);
   await prisma.user.create({
     data: {
@@ -23,7 +32,6 @@ async function main() {
 
   console.log('Created analyst user');
 
-  // Generate and insert alerts in batches
   const alerts = generateAlerts(1000);
   const batchSize = 100;
 
@@ -34,13 +42,10 @@ async function main() {
   }
 
   console.log('Seeding complete.');
+  await prisma.$disconnect();
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
