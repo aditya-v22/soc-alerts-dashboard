@@ -14,7 +14,7 @@ export class AlertsService {
     const where = this.buildWhereClause(dto);
 
     const orderBy = sortBy === 'severity'
-      ? { severity: sortOrder }
+      ? { severityRank: sortOrder }
       : { timestamp: sortOrder };
 
     const [data, total] = await Promise.all([
