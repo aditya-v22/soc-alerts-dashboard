@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,8 +24,12 @@ export default function LoginPage() {
     try {
       await login(username, password);
       router.replace('/dashboard');
-    } catch {
-      setError('Invalid username or password');
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'NetworkError') {
+        toast.error(err.message);
+      } else {
+        setError('Invalid username or password');
+      }
     } finally {
       setLoading(false);
     }

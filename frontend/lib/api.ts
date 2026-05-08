@@ -15,4 +15,25 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!error.response) {
+      // Network error — server unreachable or request never left
+      const networkError = new Error('Unable to reach the server. Please try again later.');
+      networkError.name = 'NetworkError';
+      return Promise.reject(networkError);
+    }
+
+    if (error.response.status === 401 && window.location.pathname !== '/login') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+      document.cookie = 'access_token=; path=/; max-age=0';
+      window.location.href = '/login';
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default api;
