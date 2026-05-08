@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { access_token, user: userData } = res.data;
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(userData));
+    document.cookie = `access_token=${access_token}; path=/; max-age=${60 * 60 * 24}`;
     setToken(access_token);
     setUser(userData);
   };
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    document.cookie = 'access_token=; path=/; max-age=0';
     setToken(null);
     setUser(null);
   };
