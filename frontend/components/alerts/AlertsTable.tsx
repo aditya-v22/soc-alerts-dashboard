@@ -49,29 +49,29 @@ export function AlertsTable({ alerts, filters, onFiltersChange, selectedId, onSe
           <TableRow className="hover:bg-muted/80 bg-muted">
             <TableHead className="w-28">
               <button
-                className="flex items-center gap-1 font-medium text-xs hover:text-foreground transition-colors"
+                className="flex items-center gap-1 font-bold text-xs hover:text-foreground transition-colors"
                 onClick={() => toggleSort('severity')}
               >
                 Severity <SortIcon column="severity" filters={filters} />
               </button>
             </TableHead>
             <TableHead>
-              <span className="font-medium text-xs">Title</span>
+              <span className="font-bold text-xs">Title</span>
             </TableHead>
             {!stickyPanel && (
               <TableHead className="w-40">
-                <span className="font-medium text-xs">Category</span>
+                <span className="font-bold text-xs">Category</span>
               </TableHead>
             )}
             <TableHead className="w-36">
-              <span className="font-medium text-xs">Source</span>
+              <span className="font-bold text-xs">Source</span>
             </TableHead>
             <TableHead className="w-36">
-              <span className="font-medium text-xs">Status</span>
+              <span className="font-bold text-xs">Status</span>
             </TableHead>
             <TableHead className="w-28">
               <button
-                className="flex items-center gap-1 font-medium text-xs hover:text-foreground transition-colors"
+                className="flex items-center gap-1 font-bold text-xs hover:text-foreground transition-colors"
                 onClick={() => toggleSort('timestamp')}
               >
                 Time <SortIcon column="timestamp" filters={filters} />
@@ -93,7 +93,7 @@ export function AlertsTable({ alerts, filters, onFiltersChange, selectedId, onSe
                 <SeverityBadge severity={alert.severity} />
               </TableCell>
               <TableCell className="max-w-0">
-                <span className="text-sm font-bold block truncate w-full">
+                <span className="text-sm block truncate w-full">
                   {alert.title}
                 </span>
               </TableCell>

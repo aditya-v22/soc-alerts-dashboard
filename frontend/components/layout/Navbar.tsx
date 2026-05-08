@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ShieldAlert, ChevronDown, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LightSwitch } from './LightSwitch';
 
 const NAV_LINKS = [
   { href: '/dashboard', label: 'Dashboard' },
@@ -53,7 +54,8 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <LightSwitch />
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted transition-colors outline-none">
               <div className="flex items-center justify-center size-7 rounded-md bg-primary text-primary-foreground text-xs font-semibold select-none">
