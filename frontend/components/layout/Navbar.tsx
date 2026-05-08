@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ShieldAlert, ChevronDown, LogOut, User } from 'lucide-react';
+import { ShieldAlert, ChevronDown, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
@@ -32,7 +32,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center px-6 gap-6">
         <Link href="/dashboard" className="flex items-center gap-2 font-semibold text-sm">
-          <ShieldAlert className="size-5 text-red-500" />
+          <ShieldAlert size={30} className="text-red-500 shrink-0" />
           <span>DefenderMate</span>
         </Link>
 
@@ -55,10 +55,12 @@ export function Navbar() {
 
         <div className="ml-auto">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-md hover:bg-muted transition-colors">
-              <User className="size-4" />
-              {user?.username}
-              <ChevronDown className="size-3 text-muted-foreground" />
+            <DropdownMenuTrigger className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted transition-colors outline-none">
+              <div className="flex items-center justify-center size-7 rounded-md bg-primary text-primary-foreground text-xs font-semibold select-none">
+                {user?.username?.[0]?.toUpperCase()}
+              </div>
+              <span className="text-sm font-medium capitalize">{user?.username}</span>
+              <ChevronDown className="size-3.5 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <div className="px-2 py-1.5 text-xs text-muted-foreground">{user?.email}</div>

@@ -46,7 +46,7 @@ export function AlertsTable({ alerts, filters, onFiltersChange, selectedId, onSe
     <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="hover:bg-muted/80 bg-muted">
             <TableHead className="w-28">
               <button
                 className="flex items-center gap-1 font-medium text-xs hover:text-foreground transition-colors"
@@ -92,11 +92,8 @@ export function AlertsTable({ alerts, filters, onFiltersChange, selectedId, onSe
               <TableCell>
                 <SeverityBadge severity={alert.severity} />
               </TableCell>
-              <TableCell>
-                <span className={cn(
-                  'text-sm font-medium block truncate',
-                  stickyPanel ? 'max-w-[180px]' : 'max-w-[340px]'
-                )}>
+              <TableCell className="max-w-0">
+                <span className="text-sm font-bold block truncate w-full">
                   {alert.title}
                 </span>
               </TableCell>
