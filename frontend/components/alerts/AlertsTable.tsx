@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { SeverityBadge } from './SeverityBadge';
 import { StatusBadge } from './StatusBadge';
 import { Alert, AlertFilters } from '@/types/alert';
