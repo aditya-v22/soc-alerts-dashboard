@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { X, PanelRight, PanelRightClose, ChevronDown, ChevronRight, ShieldOff } from 'lucide-react';
+import { X, PanelRight, PanelRightClose, ChevronDown, ChevronRight, ShieldOff, Link } from 'lucide-react';
 import { Severity, Status } from '@/types/alert';
 import { cn, formatLabel } from '@/lib/utils';
 import api from '@/lib/api';
@@ -55,6 +55,15 @@ export function AlertDetailPanel({ alertId, mode, onModeChange, onClose }: Props
     }
   };
 
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/alerts?id=${alertId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success('Link copied to clipboard');
+    }).catch(() => {
+      toast.error('Failed to copy link');
+    });
+  };
+
   const panelClass = cn(
     'flex flex-col bg-background border-l',
     mode === 'overlay'
@@ -71,13 +80,28 @@ export function AlertDetailPanel({ alertId, mode, onModeChange, onClose }: Props
           <Button
             variant="ghost"
             size="icon"
-            className="size-7"
+            className="size-7 cursor-pointer"
+            title="Copy link to alert"
+            onClick={handleCopyLink}
+          >
+            <Link className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7 cursor-pointer"
             title={mode === 'overlay' ? 'Pin panel' : 'Unpin panel'}
             onClick={() => onModeChange(mode === 'overlay' ? 'sticky' : 'overlay')}
           >
             {mode === 'overlay' ? <PanelRight className="size-4" /> : <PanelRightClose className="size-4" />}
           </Button>
-          <Button variant="ghost" size="icon" className="size-7" onClick={onClose}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7 cursor-pointer"
+            title="Close panel"
+            onClick={onClose}
+          >
             <X className="size-4" />
           </Button>
         </div>
