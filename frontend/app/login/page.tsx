@@ -31,7 +31,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>DefenderMate</CardTitle>
