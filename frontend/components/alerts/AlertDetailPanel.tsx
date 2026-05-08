@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { X, PanelRight, PanelRightClose, ChevronDown, ChevronRight } from 'lucide-react';
+import { X, PanelRight, PanelRightClose, ChevronDown, ChevronRight, ShieldOff } from 'lucide-react';
 import { Severity, Status } from '@/types/alert';
 import { cn, formatLabel } from '@/lib/utils';
 import api from '@/lib/api';
@@ -181,6 +181,17 @@ export function AlertDetailPanel({ alertId, mode, onModeChange, onClose }: Props
                   </SelectContent>
                 </Select>
               </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full h-8 text-xs text-amber-600 border-amber-300 hover:bg-amber-50 hover:text-amber-700 dark:text-amber-400 dark:border-amber-800 dark:hover:bg-amber-950 gap-2"
+                disabled={updating || alert.status === 'false_positive'}
+                onClick={() => handleUpdate({ status: 'false_positive' })}
+              >
+                <ShieldOff className="size-3.5" />
+                Dismiss as false positive
+              </Button>
             </div>
           </div>
         ) : null}
