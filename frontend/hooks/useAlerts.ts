@@ -8,7 +8,10 @@ export function useAlerts(filters: AlertFilters) {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== '') {
+        if (value === undefined || value === '') return;
+        if (Array.isArray(value)) {
+          if (value.length > 0) params.set(key, value.join(','));
+        } else {
           params.set(key, String(value));
         }
       });

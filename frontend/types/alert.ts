@@ -43,10 +43,10 @@ export interface AlertStats {
 }
 
 export interface AlertFilters {
-  severity?: string;
-  status?: string;
-  category?: string;
-  source?: string;
+  severity?: string[];
+  status?: string[];
+  category?: string[];
+  source?: string[];
   from?: string;
   to?: string;
   sortBy?: 'timestamp' | 'severity';

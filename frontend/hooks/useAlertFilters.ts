@@ -2,16 +2,24 @@ import { useCallback, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AlertFilters } from '@/types/alert';
 
+const ARRAY_KEYS = ['severity', 'status', 'category', 'source'] as const;
+
 function paramsToFilters(params: URLSearchParams): AlertFilters {
+  const getArray = (key: string): string[] | undefined => {
+    const val = params.get(key);
+    if (!val) return undefined;
+    return val.split(',').filter(Boolean);
+  };
+
   return {
     page: Number(params.get('page') || 1),
     limit: Number(params.get('limit') || 25),
     sortBy: (params.get('sortBy') as AlertFilters['sortBy']) || 'timestamp',
     sortOrder: (params.get('sortOrder') as AlertFilters['sortOrder']) || 'desc',
-    severity: params.get('severity') || undefined,
-    status: params.get('status') || undefined,
-    category: params.get('category') || undefined,
-    source: params.get('source') || undefined,
+    severity: getArray('severity'),
+    status: getArray('status'),
+    category: getArray('category'),
+    source: getArray('source'),
     from: params.get('from') || undefined,
     to: params.get('to') || undefined,
     search: params.get('search') || undefined,
@@ -20,11 +28,18 @@ function paramsToFilters(params: URLSearchParams): AlertFilters {
 
 function filtersToParams(filters: AlertFilters, selectedId?: string | null): URLSearchParams {
   const params = new URLSearchParams();
+
   Object.entries(filters).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') {
+    if (value === undefined || value === '') return;
+
+    if (ARRAY_KEYS.includes(key as typeof ARRAY_KEYS[number])) {
+      const arr = value as string[];
+      if (arr.length > 0) params.set(key, arr.join(','));
+    } else {
       params.set(key, String(value));
     }
   });
+
   if (selectedId) params.set('selected', selectedId);
   return params;
 }
