@@ -4,13 +4,15 @@ A full-stack web application for Security Operations Center (SOC) analysts to tr
 
 ## Stack
 
-- **Backend**: NestJS, Prisma, SQLite
+- **Frontend**: Next.js 15, shadcn/ui, TanStack Query, Recharts
+- **Backend**: NestJS, Prisma 7, SQLite (libsql)
 
 ## Project Structure
 
 ```
 defendermate/
-└── backend/    # NestJS API
+├── backend/    # NestJS API
+└── frontend/   # Next.js app
 ```
 
 ## Getting Started
@@ -26,8 +28,19 @@ npx prisma db seed
 npm run start:dev
 ```
 
-API available at `http://localhost:3001`
+API available at `http://localhost:3001`  
 Swagger docs at `http://localhost:3001/api/docs`
+
+### Frontend
+
+```bash
+cd frontend
+cp .env.local.example .env.local
+npm install
+npm run dev
+```
+
+App available at `http://localhost:3000`
 
 ## Demo Credentials
 
