@@ -6,9 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  AreaChart, Area,
 } from 'recharts';
 import { ShieldAlert, ShieldCheck, Clock, AlertTriangle } from 'lucide-react';
 import { formatLabel } from '@/lib/utils';
+import { useAlertTimeline } from '@/hooks/useAlertTimeline';
 
 const SEVERITY_COLORS: Record<string, string> = {
   critical: '#ef4444',
@@ -63,6 +65,7 @@ function StatCard({
 export function DashboardView() {
   const router = useRouter();
   const { data: stats, isLoading: statsLoading } = useAlertStats();
+  const { data: timeline } = useAlertTimeline(30);
 
   const total = (stats?.bySeverity ?? []).reduce((sum, s) => sum + s.count, 0);
   const critical = stats?.bySeverity.find((s) => s.severity === 'critical')?.count ?? 0;
@@ -107,6 +110,49 @@ export function DashboardView() {
 
   return (
     <main className="flex-1 px-6 py-6 space-y-6">
+      {/* Timeline chart */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-semibold">Alert Trend — Last 30 Days</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={160}>
+            <AreaChart data={timeline ?? []} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="timelineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: string) => v.slice(5)}
+                interval="preserveStartEnd"
+              />
+              <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <Tooltip
+                contentStyle={{ fontSize: 12 }}
+                labelFormatter={(label: string) => label}
+                formatter={(value: number) => [value, 'Alerts']}
+              />
+              <Area
+                type="monotone"
+                dataKey="count"
+                stroke="#6366f1"
+                strokeWidth={2}
+                fill="url(#timelineGrad)"
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard title="Total Alerts" value={total} icon={ShieldAlert} color="#6366f1" />

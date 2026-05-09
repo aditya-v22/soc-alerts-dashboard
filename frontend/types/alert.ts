@@ -42,6 +42,11 @@ export interface AlertStats {
   byCategory: { category: Category; count: number }[];
 }
 
+export interface AlertTimeline {
+  date: string;
+  count: number;
+}
+
 export interface AlertFilters {
   severity?: string[];
   status?: string[];

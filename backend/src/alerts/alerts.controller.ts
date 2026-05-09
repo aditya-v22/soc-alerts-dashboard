@@ -36,6 +36,12 @@ export class AlertsController {
     return this.alertsService.getStats();
   }
 
+  @Get('timeline')
+  @ApiOperation({ summary: 'Get daily alert counts over the last N days' })
+  getTimeline(@Query('days') days?: string) {
+    return this.alertsService.getTimeline(days ? parseInt(days, 10) : 30);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a single alert by ID' })
   findOne(@Param('id') id: string) {

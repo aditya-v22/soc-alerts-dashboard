@@ -72,6 +72,22 @@ export class AlertsService {
     return this.formatAlert(updated);
   }
 
+  async getTimeline(days = 30) {
+    const safeDays = Number.isFinite(days) && days > 0 ? days : 30;
+    const since = new Date(Date.now() - safeDays * 24 * 60 * 60 * 1000).toISOString();
+    const rows: { date: string; count: number }[] = await this.prisma.$queryRaw`
+      SELECT
+        strftime('%Y-%m-%d', timestamp) AS date,
+        COUNT(*) AS count
+      FROM Alert
+      WHERE timestamp >= ${since}
+      GROUP BY date
+      ORDER BY date ASC
+    `;
+
+    return rows.map((r) => ({ date: r.date, count: Number(r.count) }));
+  }
+
   async getStats() {
     const [bySeverity, byStatus, byCategory] = await Promise.all([
       this.prisma.alert.groupBy({ by: ['severity'], _count: { id: true } }),
