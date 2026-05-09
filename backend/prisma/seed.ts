@@ -16,10 +16,14 @@ async function main() {
   const adapter = new PrismaLibSql({ url: resolvedUrl });
   const prisma = new PrismaClient({ adapter } as any);
 
-  console.log('Seeding database...');
+  const existingUser = await prisma.user.findFirst();
+  if (existingUser) {
+    console.log('Database already seeded, skipping.');
+    await prisma.$disconnect();
+    return;
+  }
 
-  await prisma.alert.deleteMany();
-  await prisma.user.deleteMany();
+  console.log('Seeding database...');
 
   const hashedPassword = await bcrypt.hash('DefenderM8!', 10);
   await prisma.user.create({

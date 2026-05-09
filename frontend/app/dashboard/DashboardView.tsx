@@ -136,8 +136,8 @@ export function DashboardView() {
               <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip
                 contentStyle={{ fontSize: 12 }}
-                labelFormatter={(label: string) => label}
-                formatter={(value: number) => [value, 'Alerts']}
+                labelFormatter={(label) => label}
+                formatter={(value) => [value, 'Alerts']}
               />
               <Area
                 type="monotone"
@@ -198,7 +198,7 @@ export function DashboardView() {
                   outerRadius={85}
                   paddingAngle={3}
                   dataKey="value"
-                  onClick={(entry) => goToAlerts('severity', entry.key)}
+                  onClick={(entry) => goToAlerts('severity', String(entry.key ?? ''))}
                   className="cursor-pointer"
                 >
                   {severityData.map((entry) => (
@@ -215,7 +215,7 @@ export function DashboardView() {
               {severityData.map((entry) => (
                 <button
                   key={entry.key}
-                  onClick={() => goToAlerts('severity', entry.key)}
+                  onClick={() => goToAlerts('severity', String(entry.key ?? ''))}
                   className="flex items-center gap-1.5 text-xs hover:opacity-70 transition-opacity"
                 >
                   <span className="size-2.5 rounded-full shrink-0" style={{ backgroundColor: SEVERITY_COLORS[entry.key] }} />
@@ -238,7 +238,7 @@ export function DashboardView() {
                 <XAxis type="number" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={90} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={{ fontSize: 12 }} />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} onClick={(entry) => goToAlerts('status', entry.key)} className="cursor-pointer">
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} onClick={(entry) => goToAlerts('status', String(entry.key ?? ''))} className="cursor-pointer">
                   {statusData.map((entry) => (
                     <Cell key={entry.key} fill={STATUS_COLORS[entry.key] ?? '#6b7280'} />
                   ))}
@@ -260,7 +260,7 @@ export function DashboardView() {
                 <XAxis type="number" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={110} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={{ fontSize: 12 }} />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} onClick={(entry) => goToAlerts('category', entry.key)} className="cursor-pointer">
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} onClick={(entry) => goToAlerts('category', String(entry.key ?? ''))} className="cursor-pointer">
                   {categoryData.map((entry, i) => (
                     <Cell key={entry.key} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
                   ))}

@@ -1,0 +1,10 @@
+[nixpacks]
+nodejs = "22"
+
+[build]
+builder = "nixpacks"
+buildCommand = "npx prisma generate && pnpm run build"
+
+[deploy]
+startCommand = "npx prisma migrate deploy && npx tsx prisma/seed.ts && node dist/src/main"
+restartPolicyType = "on_failure"

@@ -1,0 +1,10 @@
+[nixpacks]
+nodejs = "22"
+
+[build]
+builder = "nixpacks"
+buildCommand = "pnpm run build"
+
+[deploy]
+startCommand = "pnpm run start"
+restartPolicyType = "on_failure"
